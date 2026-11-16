@@ -18,6 +18,7 @@ struct StartYourPlantJourney : View {
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Divider()
+                    .overlay(.gray)
 
             }
             .padding(.horizontal,16)

@@ -16,6 +16,9 @@ struct SetReminder: View {
     @State var light: Light = .fullSun
     @State var wateringDays: WateringDay = .everyDay
     @State var water: Water = .one
+    let viewModel = PlantViewModel()
+    var plant: Plant? = nil
+    
     
     var body: some View {
         NavigationStack{
@@ -25,63 +28,87 @@ struct SetReminder: View {
             
             
             
-            
-            Form{
-                HStack{
-                    Text("Plant Name")
-                    TextField("Pothos", text: $PlantName)
-                }
-                Section{
-                    Picker("Room",selection:$room){
-                        ForEach(Room.allCases,id: \.self){room in
-                            Text(room.rawValue).tag(room)
-                        }
-                        
+            Form {
+                Section {
+                    HStack {
+                        Text("Plant Name")
+                        TextField("Pothos", text: $PlantName)
                     }
-                    Picker("Light",selection:$light){
-                        ForEach(Light.allCases,id: \.self){light in
-                            Text(light.rawValue).tag(light)
+                }
+
+                Section {
+                    Picker(selection: $room) {
+                        ForEach(Room.allCases, id: \.self) { option in
+                            Text(option.rawValue).tag(option)
                         }
-                        
-                        
+                    } label: {
+                        Label("Room", systemImage: Room.icon)
+                            .foregroundStyle(.white)
                     }
 
-                }
-                   Section{
-                            Picker("Watering Days",selection:$wateringDays){
-                                Text("Every day").tag("Every day")
-                                Text("1-2 day").tag("1-2 day")
-                                Text("2-3 day").tag("2-3 day")
-                            }
-                            Picker("Water",selection:$water){
-                                Text("20-50 ml").tag("20-50 ml")
-                                Text("50-75 ml").tag("50-75 ml")
-                                Text("75-100 ml").tag("75-100 ml")
-                                
-                            }
-                            
-                            
+                    Picker(selection: $light) {
+                        ForEach(Light.allCases, id: \.self) { option in
+                            Text(option.rawValue).tag(option)
                         }
-                        
+                    } label: {
+                        Label("Light", systemImage: Light.icon)
+                            .foregroundStyle(.white)
                     }
-                    .navigationTitle("Set Reminder")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar{
+                }
+
+                Section {
+                    Picker(selection: $wateringDays) {
+                        ForEach(WateringDay.allCases, id: \.self) { option in
+                            Text(option.rawValue).tag(option)
+                        }
+                    } label: {
+                        Label("Watering Days", systemImage: WateringDay.icon)
+                            .foregroundStyle(.white)
+                    }
+
+                    Picker(selection: $water) {
+                        ForEach(Water.allCases, id: \.self) { option in
+                            Text(option.rawValue).tag(option)
+                        }
+                    } label: {
+                        Label("Water", systemImage: Water.icon)
+                            .foregroundStyle(.white)
+                    }
+                
+                }
+                if let plant {
+                    Section{
+                        Button(role : .destructive){
+                            viewModel.deletePlant(context: context, plant: plant)
+                            closeSheet=true
+                        }label: {
+                          Text("Delete Reminder")
+                                .frame(maxWidth: .infinity)
+                          
+                        }
+                
+                    }
+                }
+            }                    .toolbar{
                         ToolbarItem(placement:.confirmationAction){
                             Button{
-                                let newPlant=Plant(name:PlantName, room: room, light: light, WateringDays: wateringDays, water: Water)
-                                context.insert(newPlant)
+                                if let plant{
+                                    viewModel.updatePlant(context: context, plant: plant, name: PlantName, room: room, light: light, wateringDay: wateringDays, water: water)
+                                    
+                                }else{
+                                    viewModel.addPlant(context: context, name: PlantName, room: room, light: light, wateringDays: wateringDays, water: water)
+                                    
+                                }
                                 closeSheet=true
                             }label: {
                                 Image(systemName:"checkmark")
                                     .foregroundStyle(.white)
                             }
+                           
                             .buttonStyle(.glassProminent)
                             .tint(.greenApp)
                             .disabled(PlantName.isEmpty)
-                            
-                            
-                            
+                           
                         }
                         ToolbarItem(placement:.cancellationAction){
                             
@@ -92,19 +119,31 @@ struct SetReminder: View {
                                     .foregroundStyle(.white)
                                 
                             }
-                            .buttonStyle(.glassProminent)
+                          
+                            
+                            
                             .fullScreenCover(isPresented: $closeSheet){
                                 NoReminders()
                             }
                             
+                            
                         }
-                        
-                        
-                        
-                        
-                        
+                   
                         
                     }
+            .onAppear{
+                if let plant{
+                    PlantName=plant.plantName
+                    room = plant.room
+                    light = plant.light
+                    wateringDays = plant.wateringDays
+                    water = plant.water
+                    
+                }
+                
+            }
+            
+            
                 }
             }
         }
@@ -113,5 +152,3 @@ struct SetReminder: View {
         #Preview {
             SetReminder()
         }
-        
-    
