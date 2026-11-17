@@ -4,7 +4,12 @@ import SwiftData
 @main
 struct MyApp: App {
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
-    @State private var showStart: Bool = true
+    @State private var showStart: Bool
+
+    init() {
+        let firstTime = UserDefaults.standard.object(forKey: "isFirstTime") as? Bool ?? true
+        _showStart = State(initialValue: firstTime)
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -17,7 +22,6 @@ struct MyApp: App {
             }
             .onAppear {
                 NotificationService().requestPermission()
-                showStart = isFirstTime
                 isFirstTime = false
             }
         }

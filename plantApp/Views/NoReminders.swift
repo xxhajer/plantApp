@@ -39,7 +39,12 @@ struct NoReminders : View {
                         .bold()
                         .frame(maxWidth: .infinity,maxHeight: .infinity)
                         .font(.title2)
-                }else{
+                }else if waterCount == plants.count{
+                    Text("All Done! 🎉")
+                        .bold()
+                        .frame(maxWidth: .infinity,maxHeight: .infinity)
+                        .font(.title2)
+            }else{
                     VStack{
                         Text(waterCount==0 ? "Your plants are waiting for a sip 💦" : "\(waterCount) of your plants feel loved today ✨")
                             .font(.subheadline)

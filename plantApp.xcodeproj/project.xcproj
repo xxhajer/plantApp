@@ -11,7 +11,22 @@
     ],
   },
   "files": [
+    { "path": "README.md", "target-membership": [ "plantApp/resources" ] },
+    {
+      "kind": "group",
+      "path": "assets",
+      "children": [
+        { "path": "01-welcome.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "02-dashboard.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "03-set-reminder.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "04-edit-reminder.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "05-all-done.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "banner.png", "target-membership": [ "plantApp/resources" ] },
+        { "path": "icon.png", "target-membership": [ "plantApp/resources" ] },
+      ],
+    },
     { "kind": "folder", "path": "plantApp", "target-membership": [ "plantApp" ] },
+    { "path": "Appicon.icon", "target-membership": [ "plantApp/resources" ] },
     {
       "kind": "group",
       "name": "Products",
@@ -32,6 +47,8 @@
         "resources",
       ],
       "build-settings": {
+        "ASSETCATALOG_COMPILER_APPICON_NAME": "Appicon",
+        "ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS": "NO",
         "CODE_SIGN_STYLE": "Automatic",
         "CURRENT_PROJECT_VERSION": "1",
         "ENABLE_APP_SANDBOX": "YES",

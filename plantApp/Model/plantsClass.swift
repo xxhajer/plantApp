@@ -5,7 +5,7 @@
 //  Created by hajer on 01/06/1448 AH.
 //
 import SwiftData
-
+import Foundation
 enum Room: String, CaseIterable, Codable {
     case bedroom = "Bedroom"
     case livingRoom = "Living Room"
@@ -29,6 +29,16 @@ enum WateringDay: String, CaseIterable, Codable {
     case everyThreeDay = "Every Three Days"
 
     static let icon = "drop"
+    var days: Int {
+        switch self{
+        case .everyDay:return 1
+        case .everyTwoDay: return 2
+        case .everyThreeDay: return 3
+            
+            
+        }
+        
+    }
 }
 
 enum Water: String, CaseIterable, Codable {
@@ -48,6 +58,7 @@ class Plant {
     var wateringDays: WateringDay
     var water: Water
     var isWatered : Bool
+    var notificationID : String = UUID().uuidString
 
     init(name: String, room: Room, light: Light, wateringDays: WateringDay, water: Water, isWatered: Bool = false) {
         self.plantName = name
